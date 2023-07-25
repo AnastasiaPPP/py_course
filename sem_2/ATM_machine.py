@@ -18,11 +18,20 @@ LOWER_WITHDRAWAL_AMOUNT = 30
 UPPER_WITHDRAWAL_AMOUNT = 600
 deposit = 0
 operations_counter = 0
+history_of_operations = []
+
+
 def print_menu():
     print('Выберите действие:\n1. Пополнить\n2. Снять\n3. Выйти')
 
+
 def show_deposit():
     print(f'На счету: {deposit}')
+
+
+def write_operation(name, sum):
+    history_of_operations.append((name, sum))
+
 
 def make_a_deposit():
     global operations_counter
@@ -37,9 +46,11 @@ def make_a_deposit():
             operations_counter += 1
             if check_deposit_limit():
                 deposit -= deposit * WEALTH_TAX / 100
+            write_operation('Пополнение: ', user_deposit)
             break
         else:
             print('Сумма должна быть кратной 50!')
+
 
 def make_a_withdrawal():
     global operations_counter
@@ -57,6 +68,7 @@ def make_a_withdrawal():
             operations_counter += 1
             if check_deposit_limit():
                 deposit -= deposit * WEALTH_TAX / 100
+            write_operation('Снятие: ', amount)
             break
         else:
             print('Сумма должна быть от 30 до 600 у.е. и кратной 50')
@@ -67,7 +79,6 @@ def check_deposit_limit():
     if deposit > DEPOSIT_LIMIT:
         return True
     return False
-
 
 
 while True:
