@@ -1,4 +1,13 @@
 import csv
+import logging
+import argparse
+parser = argparse.ArgumentParser(description='Student parser')
+parser.add_argument('name', type=str, help='Type the name of student')
+parser.add_argument('last_name', type=str, help='Type the surname of student')
+args = parser.parse_args()
+
+
+logging.basicConfig(level=logging.INFO, filename='student_log.log', filemode='w')
 
 
 class CheckName:
@@ -12,7 +21,9 @@ class CheckName:
         if value.istitle() and value.isalpha():
             setattr(instance, self.param_name, value)
         else:
-            raise ValueError(f'Wrong value - {value}')
+            logging.error(f'ValueError wrong value - {value}')
+            # raise ValueError(f'Wrong value - {value}')
+
 
 
 class Range:
@@ -29,7 +40,8 @@ class Range:
     def __set__(self, instance, value):
         if value is not None:
             if value > self.max_val or value < self.min_val:
-                raise ValueError(f'Wrong value - {value}')
+                logging.error(f'ValueError wrong value - {value}')
+                #raise ValueError(f'Wrong value - {value}')
             else:
                 setattr(instance, self.param_name, value)
 
@@ -43,7 +55,8 @@ class Student:
     def __init__(self, name, last_name):
         self.name = name
         self.last_name = last_name
-        self.subjects = self._get_subjects()
+        #self.subjects = self._get_subjects()
+        logging.info(f'Student {name} {last_name} created')
 
     def __repr__(self):
         return f'Student({self.name}, {self.last_name}, {self.subjects})'
